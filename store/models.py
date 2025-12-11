@@ -2,9 +2,16 @@ from django.db import models
 
 #For Django Field Types : https://docs.djangoproject.com/en/6.0/ref/models/fields/
 
+#MANY - TO MANY Relationship
+class Promotion(models.Model):
+    description = models.CharField(max_length=255)
+    discount = models.FloatField()
+    #by default product_set is created by django to change it use related_name = ''
+
 #ONE-TO-MANY Relationship
 class Collection(models.Model):#A collection can have multiple products
     title = models.CharField(max_length = 255)
+    featured_product = models.ForeignKey('Product',on_delete=models.SET_NULL,null=True , related_name= '+')
 
 #Product class
 class Product(models.Model):
@@ -15,10 +22,15 @@ class Product(models.Model):
     inventory = models.IntegerField()
     last_update = models.DateTimeField(auto_now = True) #auto_now_add
 
-    #Establishing a relation
+    #Establishing a One to many relation
     collection = models.ForeignKey(Collection,on_delete=models.PROTECT)#When you delete a collection we do no to delete all the products in the collection
 #When it is no possible to maintain the Parent class above the Child class the pass the parent class as a string 
 #In this case collection = models.ForeignKey('Collection') and so on.
+
+#Establishing a many to many relationship
+    promotions = models.ManyToManyField(Promotion)
+
+
 
 #Customer class
 class Customer(models.Model):
