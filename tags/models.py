@@ -2,6 +2,7 @@ from django.db import models
 #from store import Product
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.auth.models import User
 
 class Tag(models.Model):
     label = models.CharField(max_length=255)
@@ -31,3 +32,10 @@ class TaggedItem(models.Model):
 #When querying data we might get the actual onject that this tag is appplying to
     content_object = GenericForeignKey()
 #Content object can now read the particular object that a particular tag is applied to
+
+class LikedItem(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    #If a user is deleted then all the objects( that the user has liked )related to the user must be deleted
+    content_type = models.ForeignKey(ContentType,on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    current_object = GenericForeignKey()
