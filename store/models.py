@@ -16,6 +16,7 @@ class Collection(models.Model):#A collection can have multiple products
 #Product class
 class Product(models.Model):
     title = models.CharField(max_length = 255) #varchar(255)
+    slug = models.SlugField()#made this change after 1 migration 
     description = models.TextField()
     #for example max price is 9999.99
     price = models.DecimalField(max_digits = 6,decimal_places = 2) #FloatFeild can cause rounding issues
@@ -57,6 +58,13 @@ class Customer(models.Model):
     phone = models.CharField(max_length = 255)
     birth_date = models.DateField(null = True)#birth_date is an instance of datefield which is nullable
     membership = models.CharField(max_length = 1, choices = MEMBERSHIP_CHOICES , default = MEMBERSHIP_BRONZE) 
+
+    #Adding Metadata
+    class Meta:
+        db_table = 'store_customers'#not recommended but now just understanding metadata
+        indexes = [
+            models.Index(fields=['last_name','first_name'])
+        ]
 
 #Order class with 2 fields - placed_at and payments statt
 class Order(models.Model):
