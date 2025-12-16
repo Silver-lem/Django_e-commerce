@@ -59,12 +59,13 @@ class Customer(models.Model):
     birth_date = models.DateField(null = True)#birth_date is an instance of datefield which is nullable
     membership = models.CharField(max_length = 1, choices = MEMBERSHIP_CHOICES , default = MEMBERSHIP_BRONZE) 
 
-    #Adding Metadata
-    class Meta:
-        db_table = 'store_customers'#not recommended but now just understanding metadata
-        indexes = [
-            models.Index(fields=['last_name','first_name'])
-        ]
+#Deleting--here committing for the prupose of deleting migrations
+    # #Adding Metadata
+    # class Meta:
+    #     db_table = 'store_customers'#not recommended but now just understanding metadata
+    #     indexes = [
+    #         models.Index(fields=['last_name','first_name'])
+    #     ]
 
 #Order class with 2 fields - placed_at and payments statt
 class Order(models.Model):
