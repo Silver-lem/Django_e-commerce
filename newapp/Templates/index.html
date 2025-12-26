@@ -9,7 +9,10 @@
     <!-- Rendering an Unordered List -->
         <ul>
         {% for product in products %}
-        <li>{{ product.title }}</li>
+        <!-- <li>{{ product.title }}</li> -->
+        <!-- <li>{{ product.title }} ${{ product.unit_price }}</li> -->
+        <li>{{ product.title }} - {{ product.collection.title}}</li>
+        <!-- <li>{{ product}}</li> -->
         {% endfor %}
         </ul>
 
