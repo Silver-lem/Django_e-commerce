@@ -59,7 +59,12 @@ def say_hello(request):
     # queryset = Product.objects.only('id' , 'title')
 
     # Selecting Related Objects
-    queryset = Product.objects.all()
+    # queryset = Product.objects.all()
+
+    #Annotating objects - to add additional attributed before querying them
+    # queryset = Customer.objects.annotate(is_new=True) -- TypeError : received non-expression
+    queryset = Customer.objects.annotate(new_id=F('id'))
         
-    return render(request,'index.html',{'name' : 'lemon','products': list(queryset)})
+    # return render(request,'index.html',{'name' : 'lemon','products': list(queryset)})
+    return render(request,'index.html',{'name' : 'lemon','result': list(queryset)})
     # return render(request,'index.html',{'name' : 'lemon','product': product}) #we must also change the template to accomodate this change
