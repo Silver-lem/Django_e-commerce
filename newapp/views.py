@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.db.models import Q,F
+from django.db.models import Q,F,Func,Value
 from store.models import Product,Customer,Collection,Order,OrderItem
+from django.db.models.functions import Concat
 
 def say_hello(request):
     #query_set = Product.objects.all()
@@ -63,8 +64,17 @@ def say_hello(request):
 
     #Annotating objects - to add additional attributed before querying them
     # queryset = Customer.objects.annotate(is_new=True) -- TypeError : received non-expression
-    queryset = Customer.objects.annotate(new_id=F('id'))
-        
+    # queryset = Customer.objects.annotate(new_id=F('id'))
+
+    queryset = Customer.objects.annotate(
+        #CONCAT function of a db engine
+        full_name=Func(F('first_name'),Value(' '),F('last_name'), function='CONCAT')
+        ) 
+    
+    queryset = Customer.objects.annotate(
+        #CONCAT function of a db engine
+        full_name=Concat('first_name',Value(' '),'last_name')
+        ) 
     # return render(request,'index.html',{'name' : 'lemon','products': list(queryset)})
     return render(request,'index.html',{'name' : 'lemon','result': list(queryset)})
     # return render(request,'index.html',{'name' : 'lemon','product': product}) #we must also change the template to accomodate this change
